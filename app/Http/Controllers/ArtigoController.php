@@ -68,12 +68,12 @@ class ArtigoController extends Controller
                 'conteudo.required' => 'O campo [Conteúdo] é obrigatório'
             ]);
 
-            Artigo::find($id)
+            Artigo::findOrFail($id)
             ->update(['art_titulo' => $validado['titulo'], 'art_conteudo' => $validado['conteudo']]);
 
             DB::commit();
 
-            $artigoAlterado = Artigo::findOrfail($id);
+            $artigoAlterado = Artigo::findOrFail($id);
 
             return response()->json(['data' => $artigoAlterado]);
         }catch (ValidationException $e ) {
@@ -94,7 +94,7 @@ class ArtigoController extends Controller
         DB::beginTransaction();
 
         try{
-            Artigo::findOrfail($id)->delete();
+            Artigo::findOrFail($id)->delete();
 
             DB::commit();
 

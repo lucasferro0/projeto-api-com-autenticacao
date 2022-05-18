@@ -75,7 +75,7 @@ class UsuarioController extends Controller
 
             DB::commit();
 
-            $usuarioAlterado = Usuario::findOrfail($id);
+            $usuarioAlterado = Usuario::findOrFail($id);
 
             return response()->json(['data' => $usuarioAlterado]);
         }catch (ValidationException $e ) {
