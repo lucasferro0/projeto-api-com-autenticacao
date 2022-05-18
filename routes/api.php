@@ -27,3 +27,6 @@ Route::get('usuarios', 'UsuarioController@mostrar')->middleware('jwt');
 Route::post('usuarios', 'UsuarioController@salvar')->middleware('jwt');
 
 Route::post("login", "AuthController@login");
+Route::post("me", "AuthController@me")->middleware('jwt');
+Route::post("logout", "AuthController@logout")->middleware('jwt');
+Route::post("refresh", "AuthController@refresh")->middleware('jwt');

@@ -100,8 +100,8 @@ return [
     | Notice: If you set this to null you should remove 'exp' element from 'required_claims' list.
     |
     */
-
-    'ttl' => env('JWT_TTL', 60),
+                                   // NESTE PROJETO, ESTA FORMA NÃO FUNCIONA
+    'ttl' => env('JWT_TTL', 60),  //  EM ALGUMAS VERSÕES DO LARAVEL, DEFINE O TEMPO, EM MINUTOS, DE EXPIRAÇÃO DO TOKEN
 
     /*
     |--------------------------------------------------------------------------
@@ -119,8 +119,8 @@ return [
     | systems in place to revoke the token if necessary.
     |
     */
-
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
+                                                  // NESTE PROJETO, ESTA FORMA NÃO FUNCIONA
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 60), // EM ALGUMAS VERSÕES DO LARAVEL, DEFINE O TEMPO, EM MINUTOS, DE EXPIRAÇÃO DO TOKEN GERADO PELO REFRESH
 
     /*
     |--------------------------------------------------------------------------
@@ -150,7 +150,7 @@ return [
     'required_claims' => [
         'iss',
         'iat',
-        // 'exp',
+        'exp',
         'nbf',
         'sub',
         'jti',

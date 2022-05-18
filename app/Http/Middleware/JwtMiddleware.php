@@ -17,8 +17,9 @@ class JwtMiddleware
      */
     public function handle($request, Closure $next)
     {
-        try {
-            JWTAuth::parseToken()->authenticate();
+        try {                                       // JWTAuth::parseToken()->authenticate() VAI VERIFICAR SE O TOKEN DO USUÁRIO QUE MANDOU A REQUEST É VÁLIDO
+            JWTAuth::parseToken()->authenticate();  // JWTAuth::parseToken() RETORNA O TOKEN QUE FOI ENVIADO PELO USUÁRIO NA REQUEST, OU SEJA, RETORNA O TOKEN DO USUÁRIO QUE MANDOU A REQUEST
+
         }catch (Exception $e) {
             if ($e instanceof \Tymon\JWTAuth\Exceptions\TokenInvalidException){
                 return response()->json(['status' => 'O token está inválido.']);
