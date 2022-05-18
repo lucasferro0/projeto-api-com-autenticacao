@@ -25,6 +25,8 @@ Route::delete("artigos/{id}", "ArtigoController@deletar")->middleware('jwt');
 
 Route::get('usuarios', 'UsuarioController@mostrar')->middleware('jwt');
 Route::post('usuarios', 'UsuarioController@salvar')->middleware('jwt');
+Route::put("usuarios/{id}", "UsuarioController@atualizar")->middleware('jwt');
+Route::delete("usuarios/{id}", "UsuarioController@deletar")->middleware('jwt');
 
 Route::post("login", "AuthController@login");
 Route::post("me", "AuthController@me")->middleware('jwt');

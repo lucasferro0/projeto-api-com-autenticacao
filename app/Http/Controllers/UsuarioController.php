@@ -55,4 +55,56 @@ class UsuarioController extends Controller
             return response()->json(['data' => $e->getMessage()]);
         }    
     }
+
+    public function atualizar(Request $request, int $id){
+        DB::beginTransaction();
+
+        try{
+            $validado = $request->validate([
+                'usuario' => 'required|min:2',
+                'senha' => 'required'
+            ],
+            [
+                'usuario.required' => 'O campo [Usuário] é obrigatório.',
+                'usuario.min' => 'O campo [Usuário] só pode ter no mínimo 2 caracteres.',
+                'senha.required' => 'O campo [Senha] é obrigatório'
+            ]);
+
+            Usuario::findOrFail($id)
+            ->update([ 'usu_nome' => $validado['usuario'], 'usu_senha' => Hash::make($validado['senha']) ]);
+
+            DB::commit();
+
+            $usuarioAlterado = Usuario::findOrfail($id);
+
+            return response()->json(['data' => $usuarioAlterado]);
+        }catch (ValidationException $e ) {
+
+            DB::rollBack();
+        
+            $arrError = $e->errors();
+
+            return response()->json(['data' => $arrError]);
+        }catch(Exception $e){
+            DB::rollBack();
+
+            return response()->json(['data'=> $e->getMessage()]);
+        }
+    }
+
+    public function deletar(int $id){
+        DB::beginTransaction();
+
+        try{
+            Usuario::findOrFail($id)->delete();
+
+            DB::commit();
+
+            return response()->json(['data' => 'Dado excluído com sucesso.']);
+        }catch(Exception $e){
+            DB::rollBack();
+
+            return response()->json(['data' => $e->getMessage()]);
+        }
+    }
 }
