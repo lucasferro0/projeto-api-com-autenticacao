@@ -120,7 +120,7 @@ return [
     |
     */
                                                   // NESTE PROJETO, ESTA FORMA NÃO FUNCIONA
-    'refresh_ttl' => env('JWT_REFRESH_TTL', 60), // EM ALGUMAS VERSÕES DO LARAVEL, DEFINE O TEMPO, EM MINUTOS, DE EXPIRAÇÃO DO TOKEN GERADO PELO REFRESH
+    'refresh_ttl' => env('JWT_REFRESH_TTL', 20160), // EM ALGUMAS VERSÕES DO LARAVEL, DEFINE O TEMPO, EM MINUTOS, DE EXPIRAÇÃO DO TOKEN GERADO PELO REFRESH
 
     /*
     |--------------------------------------------------------------------------
