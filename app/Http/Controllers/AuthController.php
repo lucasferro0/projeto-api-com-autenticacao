@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
@@ -25,7 +26,7 @@ class AuthController extends Controller
                 'senha.required' => 'O campo [Senha] é obrigatório'
             ]);
 
-            $user = Usuario::where('usu_nome', $validado['usuario'])->firstOrFail();
+            $user = Usuario::where('usu_nome', $validado['usuario'])->first();
 
             if ($user && Hash::check($validado['senha'], $user->usu_senha)){
                 
@@ -74,5 +75,45 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'expires_in' => 120
         ]);
+    }
+
+    public function resetPassword(Request $request){
+        DB::beginTransaction();
+
+        try{
+            $validado = $request->validate([
+                'senha_atual' => 'required',
+                'senha_nova' => 'required'
+            ],
+            [
+                'senha_atual.required' => 'O campo [Senha atual] é obrigatório.',
+                'senha_nova.required' => 'O campo [Nova senha] é obrigatório.'
+            ]);
+
+            $senhaAtual = $validado['senha_atual'];
+            $senhaNova = $validado['senha_nova'];
+
+            $user = Usuario::where('usu_nome', auth('api')->user()->usu_nome)->firstOrFail();
+
+            if ($user && Hash::check($senhaAtual, $user->usu_senha)){
+
+                $user->update(['usu_senha' => Hash::make($senhaNova)]);
+
+                DB::commit();
+
+                return response()->json(['data' => 'Senha redefinida com sucesso.']);
+            }
+
+            return response()->json(['data' => 'Senha atual inválida.']);
+        }catch(ValidationException $e){
+            DB::rollBack();
+
+            return response()->json(['data' => $e->errors()]);
+
+        }catch(Exception $e){
+            DB::rollBack();
+
+            return response()->json(['data' => $e->getMessage()]);
+        }
     }
 }

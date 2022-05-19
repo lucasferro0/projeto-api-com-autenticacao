@@ -24,22 +24,25 @@ class UsuarioController extends Controller
         try{
             $validado = $request->validate([
                 'usuario' => 'required|min:2',
-                'senha' => 'required'
+                'senha' => 'required',
+                'email' => 'required'
             ],
             [
                 'usuario.required' => 'O campo [Usuário] é obrigatório.',
                 'usuario.min' => 'O campo [Usuário] só pode ter no mínimo 2 caracteres.',
-                'senha.required' => 'O campo [Senha] é obrigatório'
+                'senha.required' => 'O campo [Senha] é obrigatório',
+                'email.required' => 'O campo [Email] é obrigatório.'
             ]);
 
-            Usuario::create([
+            $usuarioCriado = Usuario::create([
                 'usu_nome' => $validado['usuario'], 
-                'usu_senha' => Hash::make($validado['senha'])
+                'usu_senha' => Hash::make($validado['senha']),
+                'usu_email' => $validado['email']
             ]);
             
             DB::commit();
 
-            return response()->json(['data' => 'Dados armazenados com sucesso.']);
+            return response()->json(['succes' => true, 'message' => 'Dados armazenados com sucesso.', 'data' => $usuarioCriado]);
         }catch (ValidationException $e ) {
 
             DB::rollBack();
@@ -47,12 +50,12 @@ class UsuarioController extends Controller
             $arrError = $e->errors();
 
 
-            return response()->json(['data' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $arrError]);
         }catch(Exception $e){
 
             DB::rollBack();
 
-            return response()->json(['data' => $e->getMessage()]);
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }    
     }
 
@@ -62,33 +65,35 @@ class UsuarioController extends Controller
         try{
             $validado = $request->validate([
                 'usuario' => 'required|min:2',
-                'senha' => 'required'
+                'senha' => 'required',
+                'email' => 'required'
             ],
             [
                 'usuario.required' => 'O campo [Usuário] é obrigatório.',
                 'usuario.min' => 'O campo [Usuário] só pode ter no mínimo 2 caracteres.',
-                'senha.required' => 'O campo [Senha] é obrigatório'
+                'senha.required' => 'O campo [Senha] é obrigatório',
+                'email.required' => 'O campo [Email] é obrigatório.'
             ]);
 
             Usuario::findOrFail($id)
-            ->update([ 'usu_nome' => $validado['usuario'], 'usu_senha' => Hash::make($validado['senha']) ]);
+            ->update([ 'usu_nome' => $validado['usuario'], 'usu_senha' => Hash::make($validado['senha']), 'usu_email' => $validado['email'] ]);
 
             DB::commit();
 
             $usuarioAlterado = Usuario::findOrFail($id);
 
-            return response()->json(['data' => $usuarioAlterado]);
+            return response()->json(['succes' => true, 'message' => 'Dados atualizados com sucesso.', 'data' => $usuarioAlterado]);
         }catch (ValidationException $e ) {
 
             DB::rollBack();
         
             $arrError = $e->errors();
 
-            return response()->json(['data' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $arrError]);
         }catch(Exception $e){
             DB::rollBack();
 
-            return response()->json(['data'=> $e->getMessage()]);
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }
     }
 
@@ -100,11 +105,11 @@ class UsuarioController extends Controller
 
             DB::commit();
 
-            return response()->json(['data' => 'Dado excluído com sucesso.']);
+            return response()->json(['succes' => true, 'message' => 'Dados excluídos com sucesso.']);
         }catch(Exception $e){
             DB::rollBack();
 
-            return response()->json(['data' => $e->getMessage()]);
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }
     }
 }

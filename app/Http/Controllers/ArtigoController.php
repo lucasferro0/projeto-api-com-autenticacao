@@ -30,14 +30,14 @@ class ArtigoController extends Controller
                 'conteudo.required' => 'O campo [Conteúdo] é obrigatório'
             ]);
 
-            Artigo::create([
+            $artigoCriado = Artigo::create([
                 'art_titulo' => $validado['titulo'], 
                 'art_conteudo' => $validado['conteudo']
             ]);
             
             DB::commit();
 
-            return response()->json(['data' => 'Dados armazenados com sucesso.']);
+            return response()->json(['succes' => true, 'message' => 'Dados armazenados com sucesso.', 'data' => $artigoCriado]);
         }catch (ValidationException $e ) {
 
             DB::rollBack();
@@ -45,12 +45,12 @@ class ArtigoController extends Controller
             $arrError = $e->errors();
 
 
-            return response()->json(['data' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $arrError]);
         }catch(Exception $e){
 
             DB::rollBack();
 
-            return response()->json(['data' => $e->getMessage()]);
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }
     }
 
@@ -75,18 +75,18 @@ class ArtigoController extends Controller
 
             $artigoAlterado = Artigo::findOrFail($id);
 
-            return response()->json(['data' => $artigoAlterado]);
+            return response()->json(['succes' => true, 'message' => 'Dados atualizados com sucesso.', 'data' => $artigoAlterado]);
         }catch (ValidationException $e ) {
 
             DB::rollBack();
         
             $arrError = $e->errors();
 
-            return response()->json(['data' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $arrError]);
         }catch(Exception $e){
             DB::rollBack();
 
-            return response()->json(['data'=> $e->getMessage()]);
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }
     }
 
@@ -98,11 +98,11 @@ class ArtigoController extends Controller
 
             DB::commit();
 
-            return response()->json(['data' => 'Dado excluído com sucesso.']);
+            return response()->json(['succes' => true, 'message' => 'Dados excluídos com sucesso.']);
         }catch(Exception $e){
             DB::rollBack();
 
-            return response()->json(['data' => $e->getMessage()]);
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }
     }
 }

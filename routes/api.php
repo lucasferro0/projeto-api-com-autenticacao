@@ -24,7 +24,7 @@ Route::put("artigos/{id}", "ArtigoController@atualizar")->middleware('jwt');
 Route::delete("artigos/{id}", "ArtigoController@deletar")->middleware('jwt');
 
 Route::get('usuarios', 'UsuarioController@mostrar')->middleware('jwt');
-Route::post('usuarios', 'UsuarioController@salvar')->middleware('jwt');
+Route::post('usuarios', 'UsuarioController@salvar');
 Route::put("usuarios/{id}", "UsuarioController@atualizar")->middleware('jwt');
 Route::delete("usuarios/{id}", "UsuarioController@deletar")->middleware('jwt');
 
@@ -32,3 +32,4 @@ Route::post("auth/login", "AuthController@login");
 Route::post("auth/me", "AuthController@me")->middleware('jwt');
 Route::post("auth/logout", "AuthController@logout")->middleware('jwt');
 Route::post("auth/refresh", "AuthController@refresh")->middleware('jwt');
+Route::post("auth/reset-password", "AuthController@resetPassword")->middleware('jwt');
