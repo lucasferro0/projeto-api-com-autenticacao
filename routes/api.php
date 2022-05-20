@@ -33,3 +33,5 @@ Route::post("auth/me", "AuthController@me")->middleware('jwt');
 Route::post("auth/logout", "AuthController@logout")->middleware('jwt');
 Route::post("auth/refresh", "AuthController@refresh")->middleware('jwt');
 Route::post("auth/reset-password", "AuthController@resetPassword")->middleware('jwt');
+Route::post("auth/recuperar-senha", "AuthController@recuperarSenha");
+Route::post("auth/redefinir-senha/{code}", "AuthController@redefinirSenha")->name('redefinir_senha');

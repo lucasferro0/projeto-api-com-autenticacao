@@ -42,13 +42,13 @@ class AuthController extends Controller
 
             //$token = JWTAuth::attempt([ 'email' => $validado['usuario'], 'password' => $validado['senha'] ]);
 
-            return response()->json(['data' => 'Usuário não autenticado']);
+            return response()->json(['succes' => false ,'message' => 'Usuário não autenticado']);
 
         }catch(ValidationException $e){
-            return response()->json(['data' => $e->errors()]);
+            return response()->json(['succes' => false ,'message' => $e->errors()]);
 
         }catch(Exception $e){
-            return response()->json(['data' => $e->getMessage()]);
+            return response()->json(['succes' => false ,'message' => $e->getMessage()]);
         }
     }
 
@@ -63,7 +63,7 @@ class AuthController extends Controller
     {
         auth('api')->logout();
 
-        return response()->json(['message' => 'Successfully logged out']);
+        return response()->json(['succes' => false ,'message' => 'Deslogado com sucesso']);
     }
 
     public function refresh()  // DÁ UM refresh NO TOKEN, OU SEJA, RENOVA O TOKEN
@@ -101,19 +101,102 @@ class AuthController extends Controller
 
                 DB::commit();
 
-                return response()->json(['data' => 'Senha redefinida com sucesso.']);
+                return response()->json(['succes' => true ,'message' => 'Senha redefinida com sucesso.']);
             }
 
-            return response()->json(['data' => 'Senha atual inválida.']);
+            return response()->json(['succes' => false ,'message' => 'Senha atual inválida.']);
         }catch(ValidationException $e){
             DB::rollBack();
 
-            return response()->json(['data' => $e->errors()]);
+            return response()->json(['succes' => false ,'message' => $e->errors()]);
 
         }catch(Exception $e){
             DB::rollBack();
 
-            return response()->json(['data' => $e->getMessage()]);
+            return response()->json(['succes' => false ,'message' => $e->getMessage()]);
+        }
+    }
+
+    public function recuperarSenha(Request $request){
+        DB::beginTransaction();
+        try{
+            $validado = $request->validate([
+                'email' => 'required'
+            ],
+            [
+                'email.required' => 'O campo [Email] é obrigatório.'
+            ]);
+
+            $email = $validado['email'];
+
+            $user = Usuario::where('usu_email', $email)->firstOrFail();
+
+            if ($user){  // OUTRA FORMA:  if (isset($user))
+                $caracteres = "abcdefghijklmnopqrstuvwyzABCDEFGHIJKLMNOPQRSTUVWYZ0123456789";
+                $codeRandom = substr(str_shuffle($caracteres), 0, 10);
+
+                $user->update(['remember_token' => $codeRandom]);
+
+                DB::commit();
+
+
+                $destino = $email;
+                $assunto = "Redefinição de senha";
+                $message = "Acesse o link ".route('redefinir_senha', ['code' => $codeRandom])." para redefinir sua senha.";
+                $headers  = 'MIME-Version: 1.0' . "\r\n";
+                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
+                $headers .= 'From: lucaretdodia@hotmail.com';
+
+
+
+                $status = mail($destino, $assunto, $message, $headers);
+
+
+                if($status){
+                    return response()->json(['succes' => true, 'message' => 'Email enviado com sucesso.']);
+                }
+
+                return response()->json(['succes' => false, 'message' => 'Emal não enviado.']);
+            }
+
+            return response()->json(['succes' => false, 'message' => 'Email inválido.']);
+        }catch(ValidationException $e){
+            DB::rollBack();
+            return response()->json(['succes' => false ,'message' => $e->errors()]);
+
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json(['succes' => false ,'message' => $e->getMessage()]);
+        }
+    }
+
+    public function redefinirSenha(Request $request, $code){
+        DB::beginTransaction();
+        try{
+            $validado = $request->validate([
+                'nova_senha' => 'required'
+            ],
+            [
+                'nova_senha.required' => 'O campo [Nova senha] é obrigatório.'
+            ]);
+
+            $senhaNova = $validado['nova_senha'];
+
+            $user = Usuario::where('remember_token', $code);
+
+            $user->update(['usu_senha' => $senhaNova]);
+
+            DB::commit();
+
+            return response()->json(['succes' => true, 'message' => 'Senha redefinida com sucesso.']);
+
+        }catch(ValidationException $e){
+            DB::rollBack();
+            return response()->json(['succes' => false ,'message' => $e->errors()]);
+
+        }catch(Exception $e){
+            DB::rollBack();
+            return response()->json(['succes' => false ,'message' => $e->getMessage()]);
         }
     }
 }

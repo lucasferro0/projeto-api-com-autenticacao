@@ -23,9 +23,9 @@ class UsuarioController extends Controller
 
         try{
             $validado = $request->validate([
-                'usuario' => 'required|min:2',
-                'senha' => 'required',
-                'email' => 'required'
+                'usuario' => ['required', 'min:2'],
+                'senha' => ['required'],
+                'email' => ['required']
             ],
             [
                 'usuario.required' => 'O campo [Usuário] é obrigatório.',
