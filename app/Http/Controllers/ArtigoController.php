@@ -21,8 +21,8 @@ class ArtigoController extends Controller
 
         try{
             $validado = $request->validate([
-                'titulo' => 'required|min:2',
-                'conteudo' => 'required'
+                'titulo' => ['required', 'min:2'],
+                'conteudo' => ['required']
             ],
             [
                 'titulo.required' => 'O campo [Título] é obrigatório.',
@@ -42,10 +42,9 @@ class ArtigoController extends Controller
 
             DB::rollBack();
         
-            $arrError = $e->errors();
 
 
-            return response()->json(['succes' => false, 'message' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){
 
             DB::rollBack();
@@ -59,8 +58,8 @@ class ArtigoController extends Controller
 
         try{
             $validado = $request->validate([
-                'titulo' => 'required|min:2',
-                'conteudo' => 'required'
+                'titulo' => ['required', 'min:2'],
+                'conteudo' => ['required']
             ],
             [
                 'titulo.required' => 'O campo [Título] é obrigatório.',
@@ -80,9 +79,8 @@ class ArtigoController extends Controller
 
             DB::rollBack();
         
-            $arrError = $e->errors();
 
-            return response()->json(['succes' => false, 'message' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){
             DB::rollBack();
 

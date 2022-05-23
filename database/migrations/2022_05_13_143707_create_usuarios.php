@@ -18,7 +18,7 @@ class CreateUsuarios extends Migration
             $table->string('usu_nome');
             $table->string('usu_senha');
             $table->string('usu_email');
-            $table->rememberToken();
+            $table->rememberToken()->nullable();
             $table->timestamps();
         });
     }

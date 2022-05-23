@@ -17,8 +17,8 @@ class AuthController extends Controller
         try{
 
             $validado = $request->validate([
-                'usuario' => 'required|min:2',
-                'senha' => 'required'
+                'usuario' => ['required', 'min:2'],
+                'senha' => ['required']
             ],
             [
                 'usuario.required' => 'O campo [Usuário] é obrigatório.',
@@ -63,7 +63,7 @@ class AuthController extends Controller
     {
         auth('api')->logout();
 
-        return response()->json(['succes' => false ,'message' => 'Deslogado com sucesso']);
+        return response()->json(['succes' => true ,'message' => 'Deslogado com sucesso']);
     }
 
     public function refresh()  // DÁ UM refresh NO TOKEN, OU SEJA, RENOVA O TOKEN
@@ -82,8 +82,8 @@ class AuthController extends Controller
 
         try{
             $validado = $request->validate([
-                'senha_atual' => 'required',
-                'senha_nova' => 'required'
+                'senha_atual' => ['required'],
+                'senha_nova' => ['required']
             ],
             [
                 'senha_atual.required' => 'O campo [Senha atual] é obrigatório.',
@@ -121,7 +121,7 @@ class AuthController extends Controller
         DB::beginTransaction();
         try{
             $validado = $request->validate([
-                'email' => 'required'
+                'email' => ['required']
             ],
             [
                 'email.required' => 'O campo [Email] é obrigatório.'
@@ -142,10 +142,10 @@ class AuthController extends Controller
 
                 $destino = $email;
                 $assunto = "Redefinição de senha";
-                $message = "Acesse o link ".route('redefinir_senha', ['code' => $codeRandom])." para redefinir sua senha.";
+                $message = "Acesse o link " . route('redefinir_senha', ['code' => $codeRandom]) . " para redefinir sua senha.";
                 $headers  = 'MIME-Version: 1.0' . "\r\n";
-                $headers .= 'Content-type: text/html; charset=iso-8859-1' . "\r\n";
-                $headers .= 'From: lucaretdodia@hotmail.com';
+                $headers .= "Content-type: text/plain; charset=iso-8859-1\r\n";
+                $headers .= 'From: teste@hotmail.com';
 
 
 
@@ -170,11 +170,11 @@ class AuthController extends Controller
         }
     }
 
-    public function redefinirSenha(Request $request, $code){
+    public function redefinirSenha(Request $request, string $code){
         DB::beginTransaction();
         try{
             $validado = $request->validate([
-                'nova_senha' => 'required'
+                'nova_senha' => ['required']
             ],
             [
                 'nova_senha.required' => 'O campo [Nova senha] é obrigatório.'
@@ -182,13 +182,16 @@ class AuthController extends Controller
 
             $senhaNova = $validado['nova_senha'];
 
-            $user = Usuario::where('remember_token', $code);
+            $user = Usuario::where('remember_token', $code)->first();
+            if (isset($user)){
+                $user->update(['usu_senha' => Hash::make($senhaNova), 'remember_token' => null]);
 
-            $user->update(['usu_senha' => $senhaNova]);
+                DB::commit();
 
-            DB::commit();
+                return response()->json(['succes' => true, 'message' => 'Senha redefinida com sucesso.']);
+            }
 
-            return response()->json(['succes' => true, 'message' => 'Senha redefinida com sucesso.']);
+            return response()->json(['succes' => false, 'message' => 'Não é possível redefinir a sua senha.']);
 
         }catch(ValidationException $e){
             DB::rollBack();

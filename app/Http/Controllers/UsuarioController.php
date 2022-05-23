@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Rules\Unique;
 use App\Models\Usuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,9 +24,9 @@ class UsuarioController extends Controller
 
         try{
             $validado = $request->validate([
-                'usuario' => ['required', 'min:2'],
+                'usuario' => ['required', 'min:2', new Unique('usuario')],
                 'senha' => ['required'],
-                'email' => ['required']
+                'email' => ['required', new Unique('email')]
             ],
             [
                 'usuario.required' => 'O campo [Usuário] é obrigatório.',
@@ -47,10 +48,9 @@ class UsuarioController extends Controller
 
             DB::rollBack();
         
-            $arrError = $e->errors();
 
 
-            return response()->json(['succes' => false, 'message' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){
 
             DB::rollBack();
@@ -64,9 +64,9 @@ class UsuarioController extends Controller
 
         try{
             $validado = $request->validate([
-                'usuario' => 'required|min:2',
-                'senha' => 'required',
-                'email' => 'required'
+                'usuario' => ['required', 'min:2', new Unique('usuario')],
+                'senha' => ['required'],
+                'email' => ['required', new Unique('email')]
             ],
             [
                 'usuario.required' => 'O campo [Usuário] é obrigatório.',
@@ -87,9 +87,8 @@ class UsuarioController extends Controller
 
             DB::rollBack();
         
-            $arrError = $e->errors();
 
-            return response()->json(['succes' => false, 'message' => $arrError]);
+            return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){
             DB::rollBack();
 
