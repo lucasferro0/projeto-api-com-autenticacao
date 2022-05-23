@@ -3,6 +3,7 @@
 namespace App\Rules;
 
 use App\Models\Usuario;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Contracts\Validation\Rule;
 
 class Unique implements Rule
@@ -27,7 +28,7 @@ class Unique implements Rule
     public function passes($attribute, $value)
     {
         if ($attribute === "usuario"){
-            $result = Usuario::where("usu_nome", $value)->count();
+            $result = Usuario::where(DB::raw("lower(usu_nome)"), mb_strtolower($value))->count(); // DB::raw() É USADO PARA FAZER CONSULTAS PURAS EM SQL
 
             return $result == 0;   // SE O RETORNO FOR true, O DADO PASSA NA VALIDAÇÃO. SE O RETORNO FOR false, O DADO NÃO PASSA NA VALIDAÇÃO.
         }else{
