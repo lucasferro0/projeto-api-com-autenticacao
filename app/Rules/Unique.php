@@ -28,7 +28,7 @@ class Unique implements Rule
     public function passes($attribute, $value)
     {
         if ($attribute === "usuario"){
-            $result = Usuario::where(DB::raw("lower(usu_nome)"), mb_strtolower($value))->count(); // DB::raw() É USADO PARA FAZER CONSULTAS PURAS EM SQL
+            $result = Usuario::where(DB::raw("lower(usu_nome)"), mb_strtolower($value))->count(); // DB::raw() É USADO PARA ESCREVER CONSULTAS/COMANDOS PURAS/PUROS EM SQL
 
             return $result == 0;   // SE O RETORNO FOR true, O DADO PASSA NA VALIDAÇÃO. SE O RETORNO FOR false, O DADO NÃO PASSA NA VALIDAÇÃO.
         }else{
