@@ -1,0 +1,886 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "projeto-api",
+    "version": "1.0",
+    "summary": "Projeto API",
+    "description": "Aprendendo a fazer API",
+    "contact": {}
+  },
+  "servers": [
+    {
+      "url": "http://127.0.0.1:8000",
+      "description": "Servidor local"
+    }
+  ],
+  "paths": {
+    "/api/auth/login": {
+      "parameters": [],
+      "post": {
+        "summary": "Login",
+        "operationId": "post-api-auth-login",
+        "description": "Realiza o login.",
+        "parameters": [],
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usuario": {
+                    "type": "string"
+                  },
+                  "senha": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "usuario": "nome",
+                    "senha": "123456"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "usuario": "nome",
+                    "senha": "123456"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite o nome de usuário e a senha"
+        },
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/me": {
+      "parameters": [],
+      "post": {
+        "summary": "Me",
+        "operationId": "post-api-auth-me",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Obtém o usuário autenticado no momento.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/logout": {
+      "post": {
+        "summary": "Logout",
+        "operationId": "post-api-auth-logout",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "type": "object",
+                  "properties": {}
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Realiza logout.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/refresh": {
+      "post": {
+        "summary": "Refresh",
+        "operationId": "post-api-auth-refresh",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Renova o token do usuário.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/reset-password": {
+      "post": {
+        "summary": "Reset password",
+        "operationId": "post-api-auth-reset-password",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Muda a senha do usuário logado",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "senha_atual": {
+                    "type": "string"
+                  },
+                  "senha_nova": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "senha_atual": "123456",
+                    "senha_nova": "adasdkj"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "senha_atual": "123456",
+                    "senha_nova": "adasdkj"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite senha atual e a nova senha."
+        },
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/recuperar-senha": {
+      "post": {
+        "summary": "Recuperar senha",
+        "operationId": "post-api-auth-recuperar-senha",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Envia um link para o email do usuário para redefinir a senha.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "email": "exemplo@gmail.com"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "email": "exemplo@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite o email do usuário do qual deseja recuperar a senha."
+        },
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/auth/redefinir-senha/{code}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "code",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "Redefinir senha",
+        "operationId": "post-api-auth-redefinir-senha-code",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Vai redefinir a senha do usuário que esqueceu seus dados.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "nova_senha": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "nova_senha": "hjghjgh"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "nova_senha": "hjghjgh"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite a nova senha."
+        },
+        "tags": [
+          "Autenticação"
+        ]
+      }
+    },
+    "/api/usuarios": {
+      "get": {
+        "summary": "Obter usuários",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "operationId": "get-api-usuarios",
+        "description": "Obtém todos os usuários cadastrados no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Usuário"
+        ]
+      },
+      "post": {
+        "summary": "Cadastrar usuário",
+        "operationId": "post-api-usuarios",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Vai registrar um usuário no banco de dados.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usuario": {
+                    "type": "string"
+                  },
+                  "senha": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "usuario": "fulano",
+                    "senha": "123",
+                    "email": "fulano@gmail.com"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "usuario": "fulano",
+                    "senha": "123",
+                    "email": "fulano@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite os dados do usuário a ser cadastrado."
+        },
+        "tags": [
+          "Usuário"
+        ]
+      },
+      "parameters": []
+    },
+    "/api/usuarios/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "integer"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "Atualizar usuário",
+        "operationId": "put-api-usuarios-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Atualiza um usuário no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "usuario": {
+                    "type": "string"
+                  },
+                  "senha": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "usuario": "admin",
+                    "senha": "admin",
+                    "email": "admin@gmail.com"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "usuario": "fulano",
+                    "senha": "123",
+                    "email": "fulano@gmail.com"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite os dados para atualizar o registro do usuário no banco de dados."
+        },
+        "tags": [
+          "Usuário"
+        ]
+      },
+      "delete": {
+        "summary": "Deletar usuário",
+        "operationId": "delete-api-usuarios-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Deleta um usuário no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Usuário"
+        ]
+      }
+    },
+    "/api/artigos": {
+      "get": {
+        "summary": "Obter artigos",
+        "tags": [
+          "Artigo"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "operationId": "get-api-artigos",
+        "description": "Obtém todos artigos cadastrados no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      },
+      "post": {
+        "summary": "Cadastrar artigos",
+        "operationId": "post-api-artigos",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Vai registrar um artigo no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titulo": {
+                    "type": "string"
+                  },
+                  "conteudo": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "titulo": "Tecnologia",
+                    "conteudo": "As tecnologias em Alagoas estão ficando fortes"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "titulo": "Tecnologia",
+                    "conteudo": "As tecnologias em Alagoas estão ficando fortes"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Insira os dados do artigo a ser cadastrado."
+        },
+        "tags": [
+          "Artigo"
+        ]
+      }
+    },
+    "/api/artigos/{id}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "integer"
+          },
+          "name": "id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "Atualizar artigo",
+        "operationId": "put-api-artigos-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Vai atualizar um artigo no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "titulo": {
+                    "type": "string"
+                  },
+                  "conteudo": {
+                    "type": "string"
+                  }
+                },
+                "x-examples": {
+                  "example-1": {
+                    "titulo": "Tecnologia",
+                    "conteudo": "As tecnologias em Alagoas estão ficando fortes"
+                  }
+                }
+              },
+              "examples": {
+                "Exemplo": {
+                  "value": {
+                    "titulo": "Tecnologia",
+                    "conteudo": "As tecnologias em Alagoas estão ficando fortes"
+                  }
+                }
+              }
+            }
+          },
+          "description": "Digite os dados para atualizar o artigo."
+        },
+        "tags": [
+          "Artigo"
+        ]
+      },
+      "delete": {
+        "summary": "Deletar artigo",
+        "operationId": "delete-api-artigos-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Deleta um artigo no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Artigo"
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {},
+    "securitySchemes": {
+      "Token": {
+        "name": "API Key",
+        "type": "apiKey",
+        "in": "header"
+      }
+    },
+    "requestBodies": {},
+    "parameters": {}
+  },
+  "security": [
+    {
+      "Token": []
+    }
+  ]
+}

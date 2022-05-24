@@ -45,14 +45,10 @@ class UsuarioController extends Controller
 
             return response()->json(['succes' => true, 'message' => 'Dados armazenados com sucesso.', 'data' => $usuarioCriado]);
         }catch (ValidationException $e ) {
-
             DB::rollBack();
         
-
-
             return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){
-
             DB::rollBack();
 
             return response()->json(['succes' => false, 'message' => $e->getMessage()]);
@@ -84,7 +80,6 @@ class UsuarioController extends Controller
 
             return response()->json(['succes' => true, 'message' => 'Dados atualizados com sucesso.', 'data' => $usuarioAlterado]);
         }catch (ValidationException $e ) {
-
             DB::rollBack();
         
 

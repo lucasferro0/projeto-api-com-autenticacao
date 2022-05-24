@@ -39,14 +39,10 @@ class ArtigoController extends Controller
 
             return response()->json(['succes' => true, 'message' => 'Dados armazenados com sucesso.', 'data' => $artigoCriado]);
         }catch (ValidationException $e ) {
-
             DB::rollBack();
         
-
-
             return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){
-
             DB::rollBack();
 
             return response()->json(['succes' => false, 'message' => $e->getMessage()]);
@@ -76,9 +72,7 @@ class ArtigoController extends Controller
 
             return response()->json(['succes' => true, 'message' => 'Dados atualizados com sucesso.', 'data' => $artigoAlterado]);
         }catch (ValidationException $e ) {
-
             DB::rollBack();
-        
 
             return response()->json(['succes' => false, 'message' => $e->errors()]);
         }catch(Exception $e){

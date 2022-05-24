@@ -162,10 +162,12 @@ class AuthController extends Controller
             return response()->json(['succes' => false, 'message' => 'Email inválido.']);
         }catch(ValidationException $e){
             DB::rollBack();
+            
             return response()->json(['succes' => false ,'message' => $e->errors()]);
 
         }catch(Exception $e){
             DB::rollBack();
+
             return response()->json(['succes' => false ,'message' => $e->getMessage()]);
         }
     }
@@ -195,10 +197,12 @@ class AuthController extends Controller
 
         }catch(ValidationException $e){
             DB::rollBack();
+
             return response()->json(['succes' => false ,'message' => $e->errors()]);
 
         }catch(Exception $e){
             DB::rollBack();
+
             return response()->json(['succes' => false ,'message' => $e->getMessage()]);
         }
     }
