@@ -13,9 +13,13 @@ use Illuminate\Validation\ValidationException;
 class UsuarioController extends Controller
 {
     public function mostrar(){
-        $usuarios = Usuario::all();
+        try{
+            $usuarios = Usuario::all();
 
-        return response()->json(['data' => $usuarios]);
+            return response()->json(['data' => $usuarios]);
+        }catch(Exception $e){
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
+        }
     }
 
 
@@ -46,8 +50,16 @@ class UsuarioController extends Controller
             return response()->json(['succes' => true, 'message' => 'Dados armazenados com sucesso.', 'data' => $usuarioCriado]);
         }catch (ValidationException $e ) {
             DB::rollBack();
+            // FORMA DE DEIXAR A RESPOSTA EM JSON MELHOR PARA O FRONT-END CONSUMIR
+            $lista = [];
+            $mensagem = array_values($e->errors());
+            foreach($mensagem as $listaMensagem){
+                foreach($listaMensagem as $msg){
+                    $lista[] = $msg;
+                }
+            }
         
-            return response()->json(['succes' => false, 'message' => $e->errors()]);
+            return response()->json(['succes' => false, 'message' => $lista]);
         }catch(Exception $e){
             DB::rollBack();
 

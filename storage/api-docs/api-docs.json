@@ -21,11 +21,6 @@
         "operationId": "post-api-auth-login",
         "description": "Realiza o login.",
         "parameters": [],
-        "security": [
-          {
-            "Token": []
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -677,11 +672,14 @@
         "security": [
           {
             "Token": []
+          },
+          {
+            "Token": []
           }
         ]
       },
       "post": {
-        "summary": "Cadastrar artigos",
+        "summary": "Cadastrar artigo",
         "operationId": "post-api-artigos",
         "responses": {
           "200": {
@@ -870,9 +868,8 @@
     "schemas": {},
     "securitySchemes": {
       "Token": {
-        "name": "API Key",
-        "type": "apiKey",
-        "in": "header"
+        "type": "http",
+        "scheme": "bearer"
       }
     },
     "requestBodies": {},

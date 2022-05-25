@@ -1,0 +1,13 @@
+ 
+  // ESPECIFICAÇÕES PARA A DOCUMENTAÇÃO DA API FUNCIONAR
+
+
+{
+  "openapi": "3.0.0",  -- PARA A DOCUMENTAÇÃO DA API FUNCIONAR, A VERSÃO DO openapi QUE ESTÁ DENTRO DO ARQUIVO api-docs.json DEVE ESTAR EM 3.0.0
+  "info": {
+    "title": "projeto-api",
+    "version": "1.0",
+    "summary": "Projeto API",
+    "description": "Aprendendo a fazer API",
+    "contact": {}
+  },

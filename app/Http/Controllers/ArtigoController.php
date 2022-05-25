@@ -11,9 +11,13 @@ use Illuminate\Support\Facades\DB;
 class ArtigoController extends Controller
 {
     public function mostrar(){
-        $artigos = Artigo::all();
+        try{
+            $artigos = Artigo::all();
 
-        return response()->json(['data' => $artigos]);
+            return response()->json(['data' => $artigos]);
+        }catch(Exception $e){
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
+        }
     }
 
     public function salvar(Request $request){
