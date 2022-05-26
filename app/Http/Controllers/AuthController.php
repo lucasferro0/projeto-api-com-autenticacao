@@ -52,6 +52,7 @@ class AuthController extends Controller
         }
     }
 
+
     public function me() // RETORNA O REGISTRO, QUE ESTÁ NO BD, DO USUÁRIO LOGADO NO MOMENTO COM O TOKEN
     {
         return response()->json(['data' => auth('api')->user()]); // auth('api')->user() RETORNA O REGISTRO, QUE ESTÁ NO BD, DO USUÁRIO LOGADO NO MOMENTO COM O TOKEN
@@ -59,12 +60,14 @@ class AuthController extends Controller
         // auth('api')->user()->usu_nome   PEGA O VALOR DA COLUNA usu_nome DO USUÁRIO LOGADO NO MOMENTO COM O TOKEN
     }
 
+
     public function logout() // DESLOGA O USUÁRIO, OU SEJA, INVALIDA O TOKEN
     {
         auth('api')->logout();
 
         return response()->json(['succes' => true ,'message' => 'Deslogado com sucesso']);
     }
+
 
     public function refresh()  // DÁ UM refresh NO TOKEN, OU SEJA, RENOVA O TOKEN
     {
@@ -76,6 +79,7 @@ class AuthController extends Controller
             'expires_in' => 120
         ]);
     }
+
 
     public function resetPassword(Request $request){
         DB::beginTransaction();
@@ -116,6 +120,7 @@ class AuthController extends Controller
             return response()->json(['succes' => false ,'message' => $e->getMessage()]);
         }
     }
+
 
     public function recuperarSenha(Request $request){
         DB::beginTransaction();
@@ -172,6 +177,7 @@ class AuthController extends Controller
         }
     }
 
+    
     public function redefinirSenha(Request $request, string $code){
         DB::beginTransaction();
         try{

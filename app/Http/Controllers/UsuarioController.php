@@ -67,6 +67,7 @@ class UsuarioController extends Controller
         }    
     }
 
+
     public function atualizar(Request $request, int $id){
         DB::beginTransaction();
 
@@ -103,6 +104,7 @@ class UsuarioController extends Controller
         }
     }
 
+    
     public function deletar(int $id){
         DB::beginTransaction();
 
@@ -117,5 +119,30 @@ class UsuarioController extends Controller
 
             return response()->json(['succes' => false, 'message' => $e->getMessage()]);
         }
+    }
+
+
+    public function mostrarUm(int $id){
+        try{
+            $user = Usuario::findOrFail($id);
+
+            return response()->json(['data' => $user]);
+        }catch(Exception $e){
+            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+
+    public function deletarMany(string $ids){
+        $listaMessages = [];
+        $listaIds = explode(',', $ids);   // explode() é a mesma coisa do .split() do Python
+        foreach($listaIds as $e){
+            $e = (int) $e;  // Transforma $e para o tipo int. Não precisa nesse caso, mas coloquei só para aprender
+            $message = $this->deletar($e); // A função retorna um dado do tipo response em json
+            $listaMessages[] = collect($message)->get('original');  // A função collect() transforma em um tipo/objeto Collection
+
+        }
+
+        return response()->json($listaMessages);
     }
 }

@@ -636,6 +636,91 @@
         "tags": [
           "Usuário"
         ]
+      },
+      "get": {
+        "summary": "Obter um usuário",
+        "operationId": "get-api-usuarios-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Mostra um usuário cadastrado no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Usuário"
+        ]
+      }
+    },
+    "/api/usuarios/deletes/{ids}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "ids",
+          "in": "path",
+          "required": true,
+          "description": "Passe os ids nos parâmetros da rota dessa forma:    3,6,2"
+        }
+      ],
+      "delete": {
+        "summary": "Deletar muitos usuários",
+        "operationId": "delete-api-usuarios-deletes-ids",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Vai deletar mais de um usuário cadastrado no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Usuário"
+        ]
       }
     },
     "/api/artigos": {
@@ -853,6 +938,91 @@
           }
         },
         "description": "Deleta um artigo no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Artigo"
+        ]
+      },
+      "get": {
+        "summary": "Obter um artigo",
+        "operationId": "get-api-artigos-id",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Mostra um artigo cadastrado no banco de dados.",
+        "security": [
+          {
+            "Token": []
+          }
+        ],
+        "tags": [
+          "Artigo"
+        ]
+      }
+    },
+    "/api/artigos/deletes/{ids}": {
+      "parameters": [
+        {
+          "schema": {
+            "type": "string"
+          },
+          "name": "ids",
+          "in": "path",
+          "required": true,
+          "description": "Passe os ids nos parâmetros da rota dessa forma:    3,6,2"
+        }
+      ],
+      "delete": {
+        "summary": "Deletar muitos artigos",
+        "operationId": "delete-api-artigos-deletes-ids",
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "403": {
+            "description": "Forbidden"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "description": "Vai deletar mais de um artigo cadastrado no banco de dados.",
         "security": [
           {
             "Token": []

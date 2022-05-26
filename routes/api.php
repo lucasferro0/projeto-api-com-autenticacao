@@ -19,14 +19,18 @@ use Illuminate\Support\Facades\Route;
 });*/
 
 Route::get("artigos", "ArtigoController@mostrar")->middleware('jwt');
+Route::get("artigos/{id}", "ArtigoController@mostrarUm")->middleware('jwt');
 Route::post("artigos", "ArtigoController@salvar")->middleware('jwt');
 Route::put("artigos/{id}", "ArtigoController@atualizar")->middleware('jwt');
 Route::delete("artigos/{id}", "ArtigoController@deletar")->middleware('jwt');
+Route::delete("artigos/deletes/{ids}", "ArtigoController@deletarMany")->middleware('jwt');
 
-Route::get('usuarios', 'UsuarioController@mostrar')->middleware('jwt');
-Route::post('usuarios', 'UsuarioController@salvar');
+Route::get("usuarios", "UsuarioController@mostrar")->middleware('jwt');
+Route::get("usuarios/{id}", "UsuarioController@mostrarUm")->middleware('jwt');
+Route::post("usuarios", "UsuarioController@salvar");
 Route::put("usuarios/{id}", "UsuarioController@atualizar")->middleware('jwt');
 Route::delete("usuarios/{id}", "UsuarioController@deletar")->middleware('jwt');
+Route::delete("usuarios/deletes/{ids}", "UsuarioController@deletarMany")->middleware('jwt');
 
 Route::post("auth/login", "AuthController@login");
 Route::post("auth/me", "AuthController@me")->middleware('jwt');
