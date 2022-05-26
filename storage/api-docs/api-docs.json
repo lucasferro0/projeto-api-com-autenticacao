@@ -683,7 +683,7 @@
           "name": "ids",
           "in": "path",
           "required": true,
-          "description": "Passe os ids nos parâmetros da rota dessa forma:    3,6,2"
+          "description": "Passe os ids, no parâmetro da rota, separados por vírgula dessa forma:    3,6,2"
         }
       ],
       "delete": {
@@ -993,7 +993,7 @@
           "name": "ids",
           "in": "path",
           "required": true,
-          "description": "Passe os ids nos parâmetros da rota dessa forma:    3,6,2"
+          "description": "Passe os ids, no parâmetro da rota, separados por vírgula dessa forma:    3,6,2"
         }
       ],
       "delete": {
