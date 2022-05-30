@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Exception;
 use Illuminate\Validation\ValidationException;
 use App\Models\Artigo;
+use App\Services\RemovedorArtigo;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,7 +38,8 @@ class ArtigoController extends Controller
 
             $artigoCriado = Artigo::create([
                 'art_titulo' => $validado['titulo'], 
-                'art_conteudo' => $validado['conteudo']
+                'art_conteudo' => $validado['conteudo'],
+                'art_autor' => auth('api')->user()->usu_nome
             ]);
             
             DB::commit();
@@ -89,20 +91,10 @@ class ArtigoController extends Controller
     }
 
 
-    public function deletar(int $id){
-        DB::beginTransaction();
+    public function deletar(int $id, RemovedorArtigo $removedorArtigo){
+        $message = $removedorArtigo->delete($id);
 
-        try{
-            Artigo::findOrFail($id)->delete();
-
-            DB::commit();
-
-            return response()->json(['succes' => true, 'message' => 'Dados excluídos com sucesso.']);
-        }catch(Exception $e){
-            DB::rollBack();
-
-            return response()->json(['succes' => false, 'message' => $e->getMessage()]);
-        }
+        return response()->json($message);
     }
 
 
@@ -117,13 +109,13 @@ class ArtigoController extends Controller
     }
 
 
-    public function deletarMany(string $ids){
+    public function deletarMany(string $ids, RemovedorArtigo $removedorArtigo){
         $listaMessages = [];
         $listaIds = explode(',', $ids);   // explode() é a mesma coisa do .split() do Python
-        foreach($listaIds as $e){
-            $e = (int) $e;  // Transforma $e para o tipo int. Não precisa nesse caso, mas coloquei só para aprender
-            $message = $this->deletar($e); // A função retorna um dado do tipo response em json
-            $listaMessages[] = collect($message)->get('original');  // A função collect() transforma em um tipo/objeto Collection
+        foreach($listaIds as $id){
+            $id = (int) $id;   // Transforma para int
+            $message = $removedorArtigo->delete($id);
+            $listaMessages[] = $message;
 
         }
 

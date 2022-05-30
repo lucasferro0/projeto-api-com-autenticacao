@@ -17,6 +17,7 @@ class CreateArtigo extends Migration
             $table->increments("art_id");
             $table->string("art_titulo");
             $table->string("art_conteudo");
+            $table->string("art_autor");
             $table->timestamps();
         });
     }

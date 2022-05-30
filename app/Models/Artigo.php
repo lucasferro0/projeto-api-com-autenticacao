@@ -12,6 +12,7 @@ class Artigo extends Model
 
     protected $fillable = [
         "art_titulo",
-        "art_conteudo"
+        "art_conteudo",
+        "art_autor"
     ];
 }
